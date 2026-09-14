@@ -34,7 +34,88 @@ from typing import Callable, Iterable
 
 # TODO: Implement for Task 0.1.
 
+def mul(x: float, y: float) -> float:
+    return x * y
 
+
+def id(x: float) -> float:
+    return x
+
+
+def add(x: float, y: float) -> float:
+    return x + y
+
+
+def neg(x: float) -> float:
+    return -x
+
+
+def lt(x: float, y: float) -> float:
+    if x < y:
+        return 1.0
+    else:
+        return 0.0
+    
+
+def eq(x: float, y: float) -> float:
+    if x == y:
+        return 1.0
+    else:
+        return 0.0
+
+
+def max(x: float, y: float) -> float:
+    if x > y:
+        return x
+    else:
+        return y
+    
+
+def is_close(x: float, y: float) -> float:
+    if abs(x - y) < 1e-2:
+        return 1.0
+    else:
+        return 0.0
+    
+def relu(x: float) -> float:
+    if x > 0:
+        return x
+    else:
+        return 0.0
+
+
+def log(x: float) -> float:
+    return math.log(x)
+
+
+def exp(x: float) -> float:
+    return math.exp(x)
+
+
+def inv(x: float) -> float:
+    return 1.0 / x
+
+
+def sigmoid(x: float) -> float:
+    if x >= 0:
+        return 1.0 / (1.0 + math.exp(-x))
+    else:
+        return math.exp(x) / (1.0 + math.exp(x))
+    
+
+def log_back(x: float, d: float) -> float:
+    return d / x
+
+
+def inv_back(x: float, d: float) -> float:
+    return -d / (x * x)
+
+
+def relu_back(x: float, d: float) -> float:
+    if x > 0:
+        return d
+    else:
+        return 0.0
 # ## Task 0.3
 
 # Small practice library of elementary higher-order functions.
@@ -52,3 +133,50 @@ from typing import Callable, Iterable
 
 
 # TODO: Implement for Task 0.3.
+def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[float]]:
+
+    def apply(ls: Iterable[float]) -> Iterable[float]:
+        ret = []
+        for x in ls:
+            ret.append(fn(x))
+        return ret
+
+    return apply
+
+
+def zipWith(fn: Callable[[float, float], float],) -> Callable[[Iterable[float], Iterable[float]], Iterable[float]]:
+
+    def apply(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+        ret = []
+        for x, y in zip(ls1, ls2):
+            ret.append(fn(x, y))
+        return ret
+
+    return apply
+
+
+def reduce(fn: Callable[[float, float], float], start: float) -> Callable[[Iterable[float]], float]:
+
+    def apply(ls: Iterable[float]) -> float:
+        val = start
+        for x in ls:
+            val = fn(val, x)
+        return val
+
+    return apply
+
+
+def negList(ls: Iterable[float]) -> Iterable[float]:
+    return map(neg)(ls)
+
+
+def addLists(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+    return zipWith(add)(ls1, ls2)
+
+
+def sum(ls: Iterable[float]) -> float:
+    return reduce(add, 0.0)(ls)
+
+
+def prod(ls: Iterable[float]) -> float:
+    return reduce(mul, 1.0)(ls)
