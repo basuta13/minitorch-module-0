@@ -24,4 +24,4 @@ jobs:
           python -m pip install -Ue .
 
       - name: Run tests
-        run: pytest -m "task0_1 or task0_2 or task0_3 or task0_4"
+        run: pytest 
